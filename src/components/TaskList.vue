@@ -24,7 +24,6 @@
             type="checkbox"
             :checked="item.isCompleted"
             @click="toggleIncrement(item.id)"
-            :disabled="!canBeModified"
           />
           <label @dblclick="canBeModified && enableEditing(item.id)" >{{ item.task }}</label>
           <button v-if="canBeModified" class="destroy" @click="deleteItem(item.id)"></button>
