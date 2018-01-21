@@ -2,7 +2,12 @@
   <section class="todoapp">
     <add-task-form @add="addItem"/>
     <!-- This section should be hidden by default and shown when there are todos -->
-    <task-list :items="items" v-if="total > 0" @toggle-complete="toggleCompleted"/>
+    <task-list
+      v-if="total > 0"
+      :items="items"
+      @toggle-complete="toggleCompleted"
+      @delete="deleteItem"
+    />
     <!-- This footer should hidden by default and shown when there are todos -->
     <form-footer :completed-count="completedCount" :total="total" v-if="total > 0"/>
   </section>
@@ -60,6 +65,10 @@ export default {
         isCompleted: false,
         task,
       });
+    },
+
+    deleteItem(deleteItemId) {
+      this.items = this.items.filter(item => item.id !== deleteItemId);
     },
 
     toggleCompleted(toggledItemId) {

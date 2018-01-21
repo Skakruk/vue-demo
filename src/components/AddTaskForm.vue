@@ -1,7 +1,13 @@
 <template>
   <header class="header">
     <h1>todos</h1>
-    <input class="new-todo" v-model="newTask" placeholder="What needs to be done?" autofocus @keyup.enter="submit">
+    <input
+      class="new-todo"
+      v-model="newTask"
+      placeholder="What needs to be done?"
+      autofocus
+      @keyup.enter="submit"
+    />
   </header>
 </template>
 
@@ -9,14 +15,14 @@
 export default {
   name: 'add-task-form',
   data: () => ({
-    newTask: ''
+    newTask: '',
   }),
   methods: {
     submit() {
       this.$emit('add', this.newTask);
       this.newTask = '';
-    }
-  }
+    },
+  },
 };
 </script>
 

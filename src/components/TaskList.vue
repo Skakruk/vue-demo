@@ -19,7 +19,7 @@
             @click="toggleIncrement(item.id)"
           />
           <label>{{ item.task }}</label>
-          <button class="destroy"></button>
+          <button class="destroy" @click="deleteItem(item.id)"></button>
         </div>
         <input class="edit" :value="item.task">
       </li>
@@ -34,6 +34,9 @@ export default {
   methods: {
     toggleIncrement(itemId) {
       this.$emit('toggle-complete', itemId);
+    },
+    deleteItem(itemId) {
+      this.$emit('delete', itemId);
     },
   },
 };
