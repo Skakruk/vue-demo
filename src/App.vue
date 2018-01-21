@@ -1,6 +1,6 @@
 <template>
   <section class="todoapp">
-    <add-task-form/>
+    <add-task-form @add="addItem"/>
     <!-- This section should be hidden by default and shown when there are todos -->
     <task-list :items="items" v-if="total > 0" @toggle-complete="toggleCompleted"/>
     <!-- This footer should hidden by default and shown when there are todos -->
@@ -46,6 +46,22 @@ export default {
     },
   },
   methods: {
+    addItem(task) {
+      const maxId = this.items.reduce((acc, item) => {
+        if (item.id > acc) {
+          return item.id;
+        }
+
+        return acc;
+      }, 0);
+
+      this.items.push({
+        id: maxId + 1,
+        isCompleted: false,
+        task,
+      });
+    },
+
     toggleCompleted(toggledItemId) {
       this.items = this.items.map((item) => {
         if (item.id === toggledItemId) {
