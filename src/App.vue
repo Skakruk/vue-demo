@@ -8,6 +8,7 @@
       @toggle-complete="toggleCompleted"
       @delete="deleteItem"
       @toggle-all="toggleAll"
+      @update-task="updateTask"
     />
     <!-- This footer should hidden by default and shown when there are todos -->
     <form-footer
@@ -99,6 +100,19 @@ export default {
         ...item,
         isCompleted: markCompleted,
       }));
+    },
+
+    updateTask(itemId, task) {
+      this.items = this.items.map((item) => {
+        if (item.id === itemId) {
+          return {
+            ...item,
+            task,
+          };
+        }
+
+        return item;
+      });
     },
   },
 };

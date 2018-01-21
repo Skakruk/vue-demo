@@ -14,8 +14,9 @@
       and `completed` when marked as completed -->
       <li
         v-for="item in items"
-        :class="{ completed: item.isCompleted, editing: item.isEditing }"
+        :class="{ completed: item.isCompleted, editing: item.id === editingItemId }"
         :key="item.id"
+        @dblclick="enableEditing(item.id)"
       >
         <div class="view">
           <input
@@ -27,7 +28,13 @@
           <label>{{ item.task }}</label>
           <button class="destroy" @click="deleteItem(item.id)"></button>
         </div>
-        <input class="edit" :value="item.task">
+        <input
+          v-if="item.id === editingItemId"
+          class="edit"
+          :value="item.task"
+          @blur="submitChange(item.id, $event.target.value)"
+          @keyup.enter="disableEditing"
+          ref="edit">
       </li>
     </ul>
   </section>
@@ -39,6 +46,7 @@ export default {
   props: ['items'],
   data: () => ({
     shouldToggleAll: false,
+    editingItemId: null,
   }),
   methods: {
     toggleIncrement(itemId) {
@@ -49,6 +57,19 @@ export default {
     },
     toggleAll() {
       this.$emit('toggle-all', this.shouldToggleAll);
+    },
+    enableEditing(itemId) {
+      this.editingItemId = itemId;
+      this.$nextTick(() => {
+        this.$refs.edit[0].focus();
+      });
+    },
+    disableEditing() {
+      this.editingItemId = null;
+    },
+    submitChange(itemId, task) {
+      this.$emit('update-task', itemId, task);
+      this.editingItemId = null;
     },
   },
 };
