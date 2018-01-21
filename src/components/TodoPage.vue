@@ -36,21 +36,6 @@ export default {
     FormFooter,
     TaskList,
   },
-  data: () => ({
-    items: [
-      {
-        id: 1,
-        task: 'Create a TodoMVC template',
-        isCompleted: true,
-      },
-      {
-        id: 2,
-        task: 'Rule the web',
-        isCompleted: false,
-      },
-    ],
-  }),
-
   computed: {
     // a computed getter
     completedCount() {
