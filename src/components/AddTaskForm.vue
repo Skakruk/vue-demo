@@ -8,6 +8,8 @@
       placeholder="What needs to be done?"
       autofocus
       @keyup.enter="submit"
+      name="new-todo"
+      v-validate.initial="'required|min:3'"
     />
   </header>
 </template>
@@ -20,8 +22,12 @@ export default {
   }),
   methods: {
     submit() {
-      this.$emit('add-item', this.newTask);
-      this.newTask = '';
+      if (!this.errors.has('new-todo')) {
+        this.$emit('add-item', this.newTask);
+        this.newTask = '';
+      } else {
+        alert(this.errors.first('new-todo'));
+      }
     },
   },
 };
