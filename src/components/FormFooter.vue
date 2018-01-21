@@ -15,7 +15,13 @@
       </li>
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
-    <button class="clear-completed" v-if="completedCount != total">Clear completed</button>
+    <button
+      class="clear-completed"
+      v-if="completedCount != total"
+      @click="deleteAllCompleted"
+    >
+      Clear completed
+    </button>
   </footer>
 </template>
 
@@ -26,6 +32,11 @@ export default {
     'completedCount',
     'total',
   ],
+  methods: {
+    deleteAllCompleted() {
+      this.$emit('delete-all-completed');
+    },
+  },
 };
 </script>
 

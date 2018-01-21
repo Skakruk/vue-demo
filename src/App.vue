@@ -10,7 +10,12 @@
       @toggle-all="toggleAll"
     />
     <!-- This footer should hidden by default and shown when there are todos -->
-    <form-footer :completed-count="completedCount" :total="total" v-if="total > 0"/>
+    <form-footer
+      v-if="total > 0"
+      :completed-count="completedCount"
+      :total="total"
+      @delete-all-completed="deleteAllCompleted"
+    />
   </section>
 </template>
 
@@ -70,6 +75,10 @@ export default {
 
     deleteItem(deleteItemId) {
       this.items = this.items.filter(item => item.id !== deleteItemId);
+    },
+
+    deleteAllCompleted() {
+      this.items = this.items.filter(item => !item.isCompleted);
     },
 
     toggleCompleted(toggledItemId) {
