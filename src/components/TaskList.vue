@@ -1,13 +1,14 @@
 <template>
   <section class="main">
     <input
+      v-if="canBeModified"
       id="toggle-all"
       class="toggle-all"
       type="checkbox"
       v-model="shouldToggleAll"
       @change="toggleAll"
     />
-    <label for="toggle-all">Mark all as complete</label>
+    <label for="toggle-all" v-if="canBeModified">Mark all as complete</label>
     <ul class="todo-list">
       <!-- These are here just to show the structure of the list items -->
       <!-- List items should get the class `editing` when editing
@@ -16,7 +17,6 @@
         v-for="item in items"
         :class="{ completed: item.isCompleted, editing: item.id === editingItemId }"
         :key="item.id"
-        @dblclick="enableEditing(item.id)"
       >
         <div class="view">
           <input
@@ -24,9 +24,10 @@
             type="checkbox"
             :checked="item.isCompleted"
             @click="toggleIncrement(item.id)"
+            :disabled="!canBeModified"
           />
-          <label>{{ item.task }}</label>
-          <button class="destroy" @click="deleteItem(item.id)"></button>
+          <label @dblclick="canBeModified && enableEditing(item.id)" >{{ item.task }}</label>
+          <button v-if="canBeModified" class="destroy" @click="deleteItem(item.id)"></button>
         </div>
         <input
           v-if="item.id === editingItemId"
@@ -43,7 +44,7 @@
 <script>
 export default {
   name: 'task-list',
-  props: ['items'],
+  props: ['items', 'canBeModified'],
   data: () => ({
     shouldToggleAll: false,
     editingItemId: null,

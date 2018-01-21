@@ -1,10 +1,18 @@
 <template>
-  <router-view/>
+  <div>
+    <router-view/>
+    <user-bar />
+  </div>
 </template>
 
 <script>
+import UserBar from './components/UserBar';
+
 export default {
   name: 'App',
+  components: {
+    UserBar,
+  }
 };
 </script>
 

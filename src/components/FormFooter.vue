@@ -5,19 +5,19 @@
     <!-- Remove this if you don't implement routing -->
     <ul class="filters">
       <li>
-        <a :class="{ selected: !activeStatus }" href="#/">All</a>
+        <router-link :active-class="'selected'" :to="'/dashboard'" exact>All</router-link>
       </li>
       <li>
-        <a :class="{ selected: activeStatus === 'active' }" href="#/active">Active</a>
+        <router-link :active-class="'selected'" :to="'/dashboard/active'">Active</router-link>
       </li>
       <li>
-        <a :class="{ selected: activeStatus === 'completed' }" href="#/completed">Completed</a>
+        <router-link :active-class="'selected'" :to="'/dashboard/completed'">Completed</router-link>
       </li>
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
     <button
       class="clear-completed"
-      v-if="completedCount != total"
+      v-if="canBeModified && completedCount !== total"
       @click="deleteAllCompleted"
     >
       Clear completed
@@ -31,7 +31,7 @@ export default {
   props: [
     'completedCount',
     'total',
-    'activeStatus',
+    'canBeModified',
   ],
   methods: {
     deleteAllCompleted() {

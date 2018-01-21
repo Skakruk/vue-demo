@@ -5,6 +5,7 @@
     <task-list
       v-if="total > 0"
       :items="filteredItems"
+      :can-be-modified="user.role === 'editor'"
       @toggle-complete="toggleCompleted"
       @delete-item="deleteItem"
       @toggle-all="toggleAll"
@@ -15,8 +16,8 @@
       v-if="total > 0"
       :completed-count="completedCount"
       :total="total"
+      :can-be-modified="user.role === 'editor'"
       @delete-all-completed="deleteAllCompleted"
-      :active-status="status"
     />
   </section>
 </template>

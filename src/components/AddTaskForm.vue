@@ -2,6 +2,7 @@
   <header class="header">
     <h1>todos</h1>
     <input
+      v-if="user.role === 'editor'"
       class="new-todo"
       v-model="newTask"
       placeholder="What needs to be done?"
