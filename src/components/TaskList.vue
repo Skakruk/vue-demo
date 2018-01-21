@@ -1,6 +1,12 @@
 <template>
   <section class="main">
-    <input id="toggle-all" class="toggle-all" type="checkbox">
+    <input
+      id="toggle-all"
+      class="toggle-all"
+      type="checkbox"
+      v-model="shouldToggleAll"
+      @change="toggleAll"
+    />
     <label for="toggle-all">Mark all as complete</label>
     <ul class="todo-list">
       <!-- These are here just to show the structure of the list items -->
@@ -31,12 +37,18 @@
 export default {
   name: 'task-list',
   props: ['items'],
+  data: () => ({
+    shouldToggleAll: false,
+  }),
   methods: {
     toggleIncrement(itemId) {
       this.$emit('toggle-complete', itemId);
     },
     deleteItem(itemId) {
       this.$emit('delete', itemId);
+    },
+    toggleAll() {
+      this.$emit('toggle-all', this.shouldToggleAll);
     },
   },
 };

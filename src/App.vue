@@ -7,6 +7,7 @@
       :items="items"
       @toggle-complete="toggleCompleted"
       @delete="deleteItem"
+      @toggle-all="toggleAll"
     />
     <!-- This footer should hidden by default and shown when there are todos -->
     <form-footer :completed-count="completedCount" :total="total" v-if="total > 0"/>
@@ -82,6 +83,13 @@ export default {
 
         return item;
       });
+    },
+
+    toggleAll(markCompleted) {
+      this.items = this.items.map(item => ({
+        ...item,
+        isCompleted: markCompleted,
+      }));
     },
   },
 };
