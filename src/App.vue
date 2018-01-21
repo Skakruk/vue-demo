@@ -12,21 +12,13 @@
         <!-- These are here just to show the structure of the list items -->
         <!-- List items should get the class `editing` when editing
         and `completed` when marked as completed -->
-        <li class="completed">
+        <li v-for="item in items" v-bind:class="{ completed: item.isCompleted }">
           <div class="view">
-            <input class="toggle" type="checkbox" checked>
-            <label>Taste JavaScript</label>
+            <input class="toggle" type="checkbox" v-bind:checked="item.checked" />
+            <label>{{ item.task }}</label>
             <button class="destroy"></button>
           </div>
-          <input class="edit" value="Create a TodoMVC template">
-        </li>
-        <li>
-          <div class="view">
-            <input class="toggle" type="checkbox">
-            <label>Buy a unicorn</label>
-            <button class="destroy"></button>
-          </div>
-          <input class="edit" value="Rule the web">
+          <input class="edit" v-bind:value="item.task">
         </li>
       </ul>
     </section>
@@ -55,6 +47,19 @@
 <script>
 export default {
   name: 'App',
+  data: () => {
+    return {
+      items: [
+        {
+          task: 'Create a TodoMVC template',
+          isCompleted: true,
+        },
+        {
+          task: 'Rule the web'
+        }
+      ]
+    };
+  }
 };
 </script>
 
