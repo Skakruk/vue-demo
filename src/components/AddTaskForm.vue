@@ -19,7 +19,7 @@ export default {
   }),
   methods: {
     submit() {
-      this.$emit('add', this.newTask);
+      this.$emit('add-item', this.newTask);
       this.newTask = '';
     },
   },

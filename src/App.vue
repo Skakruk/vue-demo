@@ -1,14 +1,14 @@
 <template>
   <section class="todoapp">
-    <add-task-form @add="addItem"/>
+    <add-task-form @add-item="addItem"/>
     <!-- This section should be hidden by default and shown when there are todos -->
     <task-list
       v-if="total > 0"
       :items="items"
       @toggle-complete="toggleCompleted"
-      @delete="deleteItem"
+      @delete-item="deleteItem"
       @toggle-all="toggleAll"
-      @update-task="updateTask"
+      @update-item="updateTask"
     />
     <!-- This footer should hidden by default and shown when there are todos -->
     <form-footer

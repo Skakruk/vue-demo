@@ -53,7 +53,7 @@ export default {
       this.$emit('toggle-complete', itemId);
     },
     deleteItem(itemId) {
-      this.$emit('delete', itemId);
+      this.$emit('delete-item', itemId);
     },
     toggleAll() {
       this.$emit('toggle-all', this.shouldToggleAll);
@@ -68,7 +68,7 @@ export default {
       this.editingItemId = null;
     },
     submitChange(itemId, task) {
-      this.$emit('update-task', itemId, task);
+      this.$emit('update-item', itemId, task);
       this.editingItemId = null;
     },
   },
