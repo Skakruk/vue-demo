@@ -12,9 +12,9 @@
         <!-- These are here just to show the structure of the list items -->
         <!-- List items should get the class `editing` when editing
         and `completed` when marked as completed -->
-        <li v-for="item in items" v-bind:class="{ completed: item.isCompleted }">
+        <li v-for="item in items" v-bind:class="{ completed: item.isCompleted, editing: item.isEditing }">
           <div class="view">
-            <input class="toggle" type="checkbox" v-bind:checked="item.checked" />
+            <input class="toggle" type="checkbox" v-bind:checked="item.isCompleted" />
             <label>{{ item.task }}</label>
             <button class="destroy"></button>
           </div>
@@ -25,7 +25,7 @@
     <!-- This footer should hidden by default and shown when there are todos -->
     <footer class="footer">
       <!-- This should be `0 items left` by default -->
-      <span class="todo-count"><strong>0</strong> item left</span>
+      <span class="todo-count"><strong>{{ count }}</strong> item left</span>
       <!-- Remove this if you don't implement routing -->
       <ul class="filters">
         <li>
@@ -39,7 +39,7 @@
         </li>
       </ul>
       <!-- Hidden if no completed items are left ↓ -->
-      <button class="clear-completed">Clear completed</button>
+      <button class="clear-completed" v-if="count != items.length">Clear completed</button>
     </footer>
   </section>
 </template>
@@ -55,10 +55,19 @@ export default {
           isCompleted: true,
         },
         {
-          task: 'Rule the web'
+          task: 'Rule the web',
+          isCompleted: false,
         }
       ]
     };
+  },
+
+  computed: {
+    // a computed getter
+    count: function () {
+      // `this` points to the vm instance
+      return this.items.filter(item => !item.isCompleted).length;
+    }
   }
 };
 </script>
