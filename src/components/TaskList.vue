@@ -12,7 +12,12 @@
         :key="item.id"
       >
         <div class="view">
-          <input class="toggle" type="checkbox" :checked="item.isCompleted"/>
+          <input
+            class="toggle"
+            type="checkbox"
+            :checked="item.isCompleted"
+            @click="toggleIncrement(item.id)"
+          />
           <label>{{ item.task }}</label>
           <button class="destroy"></button>
         </div>
@@ -26,6 +31,11 @@
 export default {
   name: 'task-list',
   props: ['items'],
+  methods: {
+    toggleIncrement(itemId) {
+      this.$emit('toggle-complete', itemId);
+    },
+  },
 };
 </script>
 

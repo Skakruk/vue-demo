@@ -2,7 +2,7 @@
   <section class="todoapp">
     <add-task-form/>
     <!-- This section should be hidden by default and shown when there are todos -->
-    <task-list :items="items" v-if="total > 0"/>
+    <task-list :items="items" v-if="total > 0" @toggle-complete="toggleCompleted"/>
     <!-- This footer should hidden by default and shown when there are todos -->
     <form-footer :completed-count="completedCount" :total="total" v-if="total > 0"/>
   </section>
@@ -43,6 +43,20 @@ export default {
     },
     total() {
       return this.items.length;
+    },
+  },
+  methods: {
+    toggleCompleted(toggledItemId) {
+      this.items = this.items.map((item) => {
+        if (item.id === toggledItemId) {
+          return {
+            ...item,
+            isCompleted: !item.isCompleted,
+          };
+        }
+
+        return item;
+      });
     },
   },
 };
