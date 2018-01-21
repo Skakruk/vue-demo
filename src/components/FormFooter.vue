@@ -5,13 +5,13 @@
     <!-- Remove this if you don't implement routing -->
     <ul class="filters">
       <li>
-        <a class="selected" href="#/">All</a>
+        <a :class="{ selected: !activeStatus }" href="#/">All</a>
       </li>
       <li>
-        <a href="#/active">Active</a>
+        <a :class="{ selected: activeStatus === 'active' }" href="#/active">Active</a>
       </li>
       <li>
-        <a href="#/completed">Completed</a>
+        <a :class="{ selected: activeStatus === 'completed' }" href="#/completed">Completed</a>
       </li>
     </ul>
     <!-- Hidden if no completed items are left ↓ -->
@@ -31,6 +31,7 @@ export default {
   props: [
     'completedCount',
     'total',
+    'activeStatus',
   ],
   methods: {
     deleteAllCompleted() {

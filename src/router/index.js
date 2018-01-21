@@ -7,9 +7,10 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/:status?',
       name: 'TodoPage',
       component: TodoPage,
+      props: true,
     },
   ],
 });

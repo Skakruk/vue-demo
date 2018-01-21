@@ -4,7 +4,7 @@
     <!-- This section should be hidden by default and shown when there are todos -->
     <task-list
       v-if="total > 0"
-      :items="items"
+      :items="filteredItems"
       @toggle-complete="toggleCompleted"
       @delete-item="deleteItem"
       @toggle-all="toggleAll"
@@ -16,6 +16,7 @@
       :completed-count="completedCount"
       :total="total"
       @delete-all-completed="deleteAllCompleted"
+      :active-status="status"
     />
   </section>
 </template>
@@ -28,6 +29,7 @@ import TaskList from './TaskList';
 
 export default {
   name: 'todo-page',
+  props: ['status'],
   components: {
     AddTaskForm,
     FormFooter,
@@ -56,6 +58,15 @@ export default {
     },
     total() {
       return this.items.length;
+    },
+    filteredItems() {
+      return this.items.filter((item) => {
+        switch (this.status) {
+          case 'active': return !item.isCompleted;
+          case 'completed': return item.isCompleted;
+          default: return true;
+        }
+      });
     },
   },
   methods: {
