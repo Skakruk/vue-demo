@@ -23,10 +23,13 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 import AddTaskForm from './AddTaskForm';
 import FormFooter from './FormFooter';
 import TaskList from './TaskList';
+
+const API_ENDPOINT = 'https://floating-fjord-98973.herokuapp.com/todo';
 
 export default {
   name: 'todo-page',
@@ -35,6 +38,20 @@ export default {
     AddTaskForm,
     FormFooter,
     TaskList,
+  },
+  data() {
+    return {
+      items: [],
+    };
+  },
+  created() {
+    axios.get(API_ENDPOINT)
+      .then((response) => {
+        this.items = response.data;
+      })
+      .catch((e) => {
+        this.errors.push(e);
+      });
   },
   computed: {
     // a computed getter
@@ -48,69 +65,106 @@ export default {
     filteredItems() {
       return this.items.filter((item) => {
         switch (this.status) {
-          case 'active': return !item.isCompleted;
-          case 'completed': return item.isCompleted;
-          default: return true;
+          case 'active':
+            return !item.isCompleted;
+          case 'completed':
+            return item.isCompleted;
+          default:
+            return true;
         }
       });
     },
   },
   methods: {
     addItem(task) {
-      const maxId = this.items.reduce((acc, item) => {
-        if (item.id > acc) {
-          return item.id;
-        }
-
-        return acc;
-      }, 0);
-
-      this.items.push({
-        id: maxId + 1,
-        isCompleted: false,
-        task,
-      });
+      axios.post(API_ENDPOINT, {
+        task
+      })
+        .then((response) => {
+          this.items.push(response.data);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     deleteItem(deleteItemId) {
-      this.items = this.items.filter(item => item.id !== deleteItemId);
+      axios.delete(`${API_ENDPOINT}/${deleteItemId}`)
+        .then(() => {
+          this.items = this.items.filter(item => item.id !== deleteItemId);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     deleteAllCompleted() {
-      this.items = this.items.filter(item => !item.isCompleted);
+      const requests = this.items.filter(item => item.isCompleted).map((item) => {
+        return axios.delete(`${API_ENDPOINT}/${item.id}`)
+      });
+
+      Promise.all(requests)
+        .then(() => {
+          this.items = this.items.filter(item => !item.isCompleted);
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     toggleCompleted(toggledItemId) {
-      this.items = this.items.map((item) => {
-        if (item.id === toggledItemId) {
-          return {
-            ...item,
-            isCompleted: !item.isCompleted,
-          };
-        }
+      const editItem = this.items.find(item => item.id === toggledItemId);
 
-        return item;
-      });
+      axios.put(`${API_ENDPOINT}/${toggledItemId}`, {
+        isCompleted: !editItem.isCompleted,
+      })
+        .then((response) => {
+          this.items = this.items.map((item) => {
+            if (item.id === toggledItemId) {
+              return response.data;
+            }
+            return item;
+          });
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     toggleAll(markCompleted) {
-      this.items = this.items.map(item => ({
-        ...item,
-        isCompleted: markCompleted,
-      }));
+      const requests = this.items.map(item => {
+        return axios.put(`${API_ENDPOINT}/${item.id}`, {
+          isCompleted: markCompleted,
+        });
+      });
+
+      Promise.all(requests)
+        .then(() => {
+          this.items = this.items.map(item => ({
+            ...item,
+            isCompleted: markCompleted,
+          }));
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
 
     updateTask(itemId, task) {
-      this.items = this.items.map((item) => {
-        if (item.id === itemId) {
-          return {
-            ...item,
-            task,
-          };
-        }
-
-        return item;
-      });
+      axios.put(`${API_ENDPOINT}/${itemId}`, {
+        task,
+      })
+        .then((response) => {
+          this.items = this.items.map((item) => {
+            if (item.id === itemId) {
+              return response.data;
+            }
+            return item;
+          });
+        })
+        .catch((e) => {
+          this.errors.push(e);
+        });
     },
   },
 };

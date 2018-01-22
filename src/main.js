@@ -15,18 +15,6 @@ Vue.use(persistentState, {
     role: '',
     isLoggedIn: false,
   },
-  items: [
-    {
-      id: 1,
-      task: 'Create a TodoMVC template',
-      isCompleted: true,
-    },
-    {
-      id: 2,
-      task: 'Rule the web',
-      isCompleted: false,
-    },
-  ],
 });
 
 /* eslint-disable no-new */
