@@ -26,7 +26,7 @@ export default {
         this.$emit('add-item', this.newTask);
         this.newTask = '';
       } else {
-        alert(this.errors.first('new-todo'));
+        alert(this.errors.first('new-todo')); // eslint-disable-line no-alert
       }
     },
   },
